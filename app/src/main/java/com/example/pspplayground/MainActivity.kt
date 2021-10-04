@@ -2,13 +2,18 @@ package com.example.pspplayground
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var label: TextView
+    lateinit var spinner: ProgressBar
     lateinit var button: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpView() {
         label = findViewById(R.id.label)
+        spinner = findViewById(R.id.spinner)
         button = findViewById(R.id.button)
         button.setOnClickListener {
             //launchARM()
@@ -26,7 +32,9 @@ class MainActivity : AppCompatActivity() {
             //withThreadAndPost()
             //threadFromParam()
             //launchMultipleThreads()
-            launchInsideThread()
+            //launchInsideThread()
+            //postDelayed()
+            threadProgressBar()
         }
     }
 
@@ -141,5 +149,36 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }).start()
+    }
+
+    /**
+     * Hilo con delay
+     */
+    private fun postDelayed() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            label.text = "Hola!"
+        }, 3000)
+    }
+
+    private fun threadProgressBar() {
+        Thread(Runnable {
+            for (i in 1..10) {
+                runOnUiThread {
+                    label.text = "Hola $i"
+                }
+                Thread.sleep(1000)
+            }
+
+            runOnUiThread {
+                spinner.visibility = View.VISIBLE
+            }
+
+            Thread(Runnable {
+                Handler(Looper.getMainLooper()).postDelayed({
+                    spinner.visibility = View.GONE
+                }, 3000)
+            }).start()
+        }).start()
+
     }
 }
