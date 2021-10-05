@@ -34,7 +34,8 @@ class MainActivity : AppCompatActivity() {
             //launchMultipleThreads()
             //launchInsideThread()
             //postDelayed()
-            threadProgressBar()
+            //threadProgressBar()
+            counterAfterProgressBar()
         }
     }
 
@@ -180,5 +181,27 @@ class MainActivity : AppCompatActivity() {
             }).start()
         }).start()
 
+    }
+
+    private fun counterAfterProgressBar() {
+        val counterThread = Thread(Runnable {
+            for (i in 1..10) {
+                runOnUiThread {
+                    label.text = "Hola $i"
+                }
+                Thread.sleep(1000)
+            }
+        })
+
+        Thread(Runnable {
+            runOnUiThread {
+                spinner.visibility = View.VISIBLE
+            }
+            Handler(Looper.getMainLooper()).postDelayed({
+                spinner.visibility = View.GONE
+                counterThread.start()
+            }, 3000)
+
+        }).start()
     }
 }
