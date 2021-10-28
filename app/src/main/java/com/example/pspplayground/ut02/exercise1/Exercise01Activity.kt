@@ -10,8 +10,8 @@ class Exercise01Activity : AppCompatActivity() {
 
     private val TAG = Exercise01Activity::class.java.simpleName
 
-    private val mockApiClient : ApiClient = MockApiClient()
-    private val retrofitApiClient : ApiClient = RetrofitApiClient()
+    private val mockApiClient: ApiClient = MockApiClient()
+    private val retrofitApiClient: ApiClient = RetrofitApiClient()
 
     lateinit var actionMock: Button
     lateinit var actionApi: Button
@@ -20,15 +20,31 @@ class Exercise01Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise01)
 
-        actionMock= findViewById(R.id.action_mock)
-        actionApi= findViewById(R.id.action_api)
+        actionMock = findViewById(R.id.action_mock)
+        actionApi = findViewById(R.id.action_api)
 
         actionMock.setOnClickListener {
             val userRepository = UserRepository(mockApiClient)
-            val user : UserApiModel? = userRepository.getUser(1)
+            showUser(userRepository.getUser(1))
+            showUsers(userRepository.getUsers())
+        }
+
+        actionApi.setOnClickListener {
+            val userRepository = UserRepository(retrofitApiClient)
+            showUser(userRepository.getUser(1))
+            showUsers(userRepository.getUsers())
+        }
+    }
+
+    private fun showUser(user: UserApiModel?) {
+        runOnUiThread {
             Log.d(TAG, "getUser: $user")
-            val users : List<UserApiModel> = userRepository.getUsers()
-            users.forEach {
+        }
+    }
+
+    private fun showUsers(userList: List<UserApiModel>) {
+        runOnUiThread {
+            userList.forEach {
                 Log.d(TAG, "getUsers: $it")
             }
         }
