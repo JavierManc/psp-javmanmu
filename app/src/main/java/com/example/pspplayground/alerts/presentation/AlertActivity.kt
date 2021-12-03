@@ -3,9 +3,11 @@ package com.example.pspplayground.alerts.presentation
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.Observer
 import com.example.pspplayground.alerts.app.RetrofitApiClient
 import com.example.pspplayground.alerts.data.AlertDataRepository
 import com.example.pspplayground.alerts.data.AlertRemoteSource
+import com.example.pspplayground.alerts.domain.AlertModel
 import com.example.pspplayground.alerts.domain.GetAlertUseCase
 import com.example.pspplayground.alerts.domain.GetEspecificAlertUseCase
 import com.example.pspplayground.databinding.ActivityAlertBinding
@@ -33,7 +35,8 @@ class AlertActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setUpBinding()
-        render()
+        setupViewStateObserver()
+        alertModel.getAlerts()
     }
 
     private fun setUpBinding() {
@@ -41,15 +44,19 @@ class AlertActivity : AppCompatActivity() {
         setContentView(viewBanding.root)
     }
 
-    private fun render() {
-        Thread {
-            val alert = alertModel.getAlerts().first()
-            runOnUiThread {
-                viewBanding.infoTitleText.text = alert.title
-                viewBanding.infoDateText.text = alert.datePublished
-                viewBanding.infoBodyText.text = alert.body
+    private fun setupViewStateObserver() {
+        val nameObserver = Observer<List<AlertModel>> {
+            alertModel.alertViewState.value?.forEach { model ->
+                render(model)
+                alertModel.getAlert(model.id)?.let { it1 -> alertModel.showAlert(it1) }
             }
-            Log.d(TAG, alertModel.getAlert(alert.id).toString())
-        }.start()
+        }
+        alertModel.alertViewState.observe(this, nameObserver)
+    }
+
+    private fun render(alert: AlertModel) {
+        viewBanding.infoTitleText.text = alert.title
+        viewBanding.infoDateText.text = alert.datePublished
+        viewBanding.infoBodyText.text = alert.body
     }
 }
