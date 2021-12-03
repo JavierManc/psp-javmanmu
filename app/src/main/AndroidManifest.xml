@@ -12,22 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PSPPlayground">
         <activity
-            android:name=".ut02.exercise1.Exercise01Activity"
-            android:name=".ut02.NetworkActivity"
+            android:name=".alerts.presentation.AlertActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-      </activity>
+        </activity>
 
         <activity
             android:name=".ut01.ThreadActivity"
             android:exported="true" />
-        <activity
-
         <activity
 
             android:name=".MainActivity"

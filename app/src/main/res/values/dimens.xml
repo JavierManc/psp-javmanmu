@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- DIMENS DE LA VISTA DE ALERTA -->
+
+    <!-- Márgenes de los bloques -->
+    <dimen name="block_margin">10dp</dimen>
+
+    <!-- Márgenes utilizados en el bloque de información  -->
+    <dimen name="block_margin_top_start">5dp</dimen>
+</resources>
