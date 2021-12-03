@@ -4,6 +4,8 @@
     <!-- Solicitamos permiso para acceder a internet -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PSPPlayground">
         <activity
+            android:name=".ut03.ex01.presentation.Ut03Ex01Activity"
             android:name=".alerts.presentation.AlertActivity"
             android:exported="true">
             <intent-filter>
@@ -20,12 +23,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        
+        <activity
+            android:name=".alerts.presentation.AlertActivity"
+            android:exported="true" />
+      
         <activity
             android:name=".ut01.ThreadActivity"
             android:exported="true" />
         <activity
-
             android:name=".MainActivity"
             android:exported="true" />
     </application>
